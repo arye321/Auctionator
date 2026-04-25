@@ -167,7 +167,7 @@
       <Frame parentKey="StatContainer">
         <Size x="50" y="20"/>
         <Anchors>
-          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.PurchaseQuantity" x="150" />
+          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.PurchaseQuantity" y="-30" />
         </Anchors>
         <Layers>
           <Layer level="BACKGROUND">
