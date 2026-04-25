@@ -78,6 +78,7 @@ function AuctionatorDirectSearchProviderMixin:CreateSearchTerm(term, config)
         max = parsed.maxPrice,
       },
       quality = parsed.quality, -- Check the quality locally because the Blizzard search API ignores quality
+      stat = parsed.stat,
     },
     resultMetadata = {
       quantity = parsed.quantity,

@@ -3,7 +3,7 @@
 function Auctionator.Search.SplitAdvancedSearch(searchParametersString)
   local queryString, categoryKey, minItemLevel, maxItemLevel, minLevel, maxLevel,
     minCraftedLevel, maxCraftedLevel, minPrice, maxPrice, quality, tier,
-    expansion, quantity =
+    expansion, quantity, stat =
     strsplit( Auctionator.Constants.AdvancedSearchDivider, searchParametersString )
 
   -- A nil queryString causes a disconnect if searched for, but an empty one
@@ -75,6 +75,10 @@ function Auctionator.Search.SplitAdvancedSearch(searchParametersString)
     quantity = nil
   end
 
+  if stat == "" then
+    stat = nil
+  end
+
   return {
     searchString = searchString,
     isExact = isExact,
@@ -91,6 +95,7 @@ function Auctionator.Search.SplitAdvancedSearch(searchParametersString)
     tier = tier,
     expansion = expansion,
     quantity = quantity,
+    stat = stat,
   }
 end
 
@@ -176,6 +181,19 @@ local function Expansion(splitSearch)
   return ExpansionString(splitSearch.expansion) .. separator
 end
 
+local function Stat(splitSearch)
+  if splitSearch.stat ~= nil then
+    local name = string.match(splitSearch.stat, "ITEM_MOD_(%a+)_SHORT")
+    if name then
+      return name:lower():gsub("^%l", string.upper) .. separator
+    else
+      return splitSearch.stat .. separator
+    end
+  else
+    return ""
+  end
+end
+
 local function ItemLevelRange(splitSearch)
   return RangeOptionString(
     "ilvl",
@@ -247,6 +265,7 @@ function Auctionator.Search.PrettifySearchString(searchString)
     .. Expansion(splitSearch)
     .. Quality(splitSearch)
     .. Tier(splitSearch)
+    .. Stat(splitSearch)
     .. "]"
 
   -- Clean up string removing empty stuff
@@ -372,6 +391,10 @@ function Auctionator.Search.ComposeTooltip(searchString)
   table.insert(lines, TooltipQuantity(splitSearch))
   table.insert(lines, TooltipCraftedLevelRange(splitSearch))
   table.insert(lines, TooltipQuality(splitSearch))
+  if splitSearch.stat then
+    local name = string.match(splitSearch.stat, "ITEM_MOD_(%a+)_SHORT")
+    table.insert(lines, { "Stat", name and name:lower():gsub("^%l", string.upper) or splitSearch.stat })
+  end
   if Auctionator.Constants.IsRetail then
     table.insert(lines, TooltipExpansion(splitSearch))
     table.insert(lines, TooltipTier(splitSearch))
@@ -409,6 +432,7 @@ function Auctionator.Search.ReconstituteAdvancedSearch(search)
     tostring(search.quality or ""),
     tostring(search.tier or "#"),
     tostring(search.expansion or ""),
-    tostring(search.quantity ~= 0 and search.quantity or "")
+    tostring(search.quantity ~= 0 and search.quantity or ""),
+    tostring(search.stat or "")
   )
 end

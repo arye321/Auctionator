@@ -60,6 +60,7 @@ function AuctionatorDirectSearchProviderMixin:CreateSearchTerm(term)
       exactSearch = (parsed.isExact and parsed.searchString) or nil,
       expansion = parsed.expansion,
       tier = parsed.tier,
+      stat = parsed.stat,
     },
     resultMetadata = {
       quantity = parsed.quantity,

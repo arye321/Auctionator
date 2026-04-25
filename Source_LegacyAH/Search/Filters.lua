@@ -32,6 +32,14 @@ function ALL_FILTERS.quality(resultWithKey, quality)
   return (select(Auctionator.Constants.ITEM_INFO.RARITY, C_Item.GetItemInfo(resultWithKey.entries[1].itemLink))) == quality
 end
 
+function ALL_FILTERS.stat(resultWithKey, statKey)
+  if statKey == nil then
+    return true
+  end
+  local stats = GetItemStats(resultWithKey.entries[1].itemLink)
+  return stats and stats[statKey] ~= nil
+end
+
 function Auctionator.Search.CheckFilters(resultWithKey, filters)
   for filterName, limits in pairs(filters) do
     if not ALL_FILTERS[filterName](resultWithKey, limits) then

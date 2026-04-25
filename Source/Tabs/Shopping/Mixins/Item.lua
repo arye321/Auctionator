@@ -17,6 +17,29 @@ local function InitializeQualityDropDown(dropDown)
   dropDown:InitAgain(qualityStrings, qualityIDs)
 end
 
+local function InitializeStatDropDown(dropDown)
+  local statStrings = {}
+  local statIDs = {}
+
+  table.insert(statStrings, AUCTIONATOR_L_ANY_UPPER)
+  table.insert(statIDs, NO_QUALITY)
+
+  local primaryStats = {
+    { label = _G["SPELL_STAT1_NAME"] or "Strength", id = "ITEM_MOD_STRENGTH_SHORT" },
+    { label = _G["SPELL_STAT2_NAME"] or "Agility", id = "ITEM_MOD_AGILITY_SHORT" },
+    { label = _G["SPELL_STAT3_NAME"] or "Stamina", id = "ITEM_MOD_STAMINA_SHORT" },
+    { label = _G["SPELL_STAT4_NAME"] or "Intellect", id = "ITEM_MOD_INTELLECT_SHORT" },
+    { label = _G["SPELL_STAT5_NAME"] or "Spirit", id = "ITEM_MOD_SPIRIT_SHORT" },
+  }
+
+  for _, stat in ipairs(primaryStats) do
+    table.insert(statStrings, stat.label)
+    table.insert(statIDs, stat.id)
+  end
+
+  dropDown:InitAgain(statStrings, statIDs)
+end
+
 local function InitializeTierDropDown(dropDown)
   local tierStrings = {}
   local tierIDs = {}
@@ -69,6 +92,10 @@ function AuctionatorShoppingItemMixin:OnLoad()
     self.QualityContainer.DropDown:SetValue(NO_QUALITY)
   end)
 
+  self.StatContainer.ResetStatButton:SetClickCallback(function()
+    self.StatContainer.DropDown:SetValue(NO_QUALITY)
+  end)
+
   self.TierContainer.ResetTierButton:SetClickCallback(function()
     self.TierContainer.DropDown:SetValue(NO_QUALITY)
   end)
@@ -112,6 +139,7 @@ function AuctionatorShoppingItemMixin:OnLoad()
   InitializeExpansionDropDown(self.ExpansionContainer.DropDown)
   InitializeQualityDropDown(self.QualityContainer.DropDown)
   InitializeTierDropDown(self.TierContainer.DropDown)
+  InitializeStatDropDown(self.StatContainer.DropDown)
 
   if Auctionator.Constants.IsRetail then
     self:SetHeight(470)
@@ -201,6 +229,7 @@ function AuctionatorShoppingItemMixin:GetItemString()
     quality = tonumber(self.QualityContainer.DropDown:GetValue()),
     tier = tonumber(self.TierContainer.DropDown:GetValue()),
     quantity = tonumber(self.PurchaseQuantity:GetNumber()),
+    stat = self.StatContainer.DropDown:GetValue(),
   }
   
   return Auctionator.Search.ReconstituteAdvancedSearch(search)
@@ -247,6 +276,12 @@ function AuctionatorShoppingItemMixin:SetItemString(itemString)
     self.QualityContainer.DropDown:SetValue(tostring(search.quality))
   end
 
+  if search.stat == nil or search.stat == "" then
+    self.StatContainer.DropDown:SetValue(NO_QUALITY)
+  else
+    self.StatContainer.DropDown:SetValue(search.stat)
+  end
+
   if not Auctionator.Constants.IsRetail or search.tier == nil then
     self.TierContainer.DropDown:SetValue(NO_QUALITY)
   else
@@ -273,6 +308,7 @@ function AuctionatorShoppingItemMixin:ResetAll()
   self.PriceRange:Reset()
   self.CraftedLevelRange:Reset()
   self.QualityContainer.DropDown:SetValue(NO_QUALITY)
+  self.StatContainer.DropDown:SetValue(NO_QUALITY)
 end
 
 function AuctionatorShoppingItemMixin:ReceiveEvent(eventName)

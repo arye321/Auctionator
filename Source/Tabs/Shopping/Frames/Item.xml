@@ -164,6 +164,38 @@
         </Frames>
       </Frame>
 
+      <Frame parentKey="StatContainer">
+        <Size x="50" y="20"/>
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.PurchaseQuantity" x="150" />
+        </Anchors>
+        <Layers>
+          <Layer level="BACKGROUND">
+            <FontString inherits="GameFontHighlight" parentKey="Label" text="Stat">
+              <Anchors>
+                <Anchor point="TOPLEFT"/>
+              </Anchors>
+            </FontString>
+          </Layer>
+        </Layers>
+        <Frames>
+          <Frame inherits="AuctionatorDropDown" parentKey="DropDown">
+            <KeyValues>
+              <KeyValue key="labelText" value="" type="string" />
+            </KeyValues>
+            <Anchors>
+              <Anchor point="TOPLEFT" relativeKey="$parent.Label" relativePoint="TOPRIGHT" y="8"/>
+            </Anchors>
+          </Frame>
+
+          <Button parentKey="ResetStatButton" inherits="AuctionatorResetButton">
+            <Anchors>
+              <Anchor point="TOPLEFT" relativeKey="$parent.DropDown.DropDown" relativePoint="TOPRIGHT" x="5" y="-5"/>
+            </Anchors>
+          </Button>
+        </Frames>
+      </Frame>
+
       <Frame parentKey="ExpansionContainer">
         <Size x="50" y="20"/>
         <Anchors>

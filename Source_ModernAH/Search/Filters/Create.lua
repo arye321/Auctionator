@@ -5,6 +5,7 @@ local MAPPING = {
   price = Auctionator.Search.Filters.PriceMixin,
   tier = Auctionator.Search.Filters.TierMixin,
   expansion = Auctionator.Search.Filters.ExpansionMixin,
+  stat = Auctionator.Search.Filters.StatMixin,
 }
 
 function Auctionator.Search.Filters.Create(browseResult, allFilters, filterTracker)

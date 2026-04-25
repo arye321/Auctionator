@@ -7,5 +7,6 @@
   <Script file="Exact.lua"/>
   <Script file="Tier.lua"/>
   <Script file="Expansion.lua"/>
+  <Script file="Stat.lua"/>
   <Script file="Create.lua"/>
 </Ui>
